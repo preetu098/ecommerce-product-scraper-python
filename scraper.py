@@ -1,3 +1,15 @@
+"""
+E-Commerce Product Scraper
+
+Author: Pratibha Rajawat
+Description:
+Scrapes book data from BooksToScrape and exports results to CSV.
+
+Technologies:
+- Requests
+- BeautifulSoup
+- Pandas
+"""
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
@@ -25,10 +37,16 @@ if response.status_code == 200:
             class_="instock availability"
         ).text.strip()
 
+        rating=book.find("p")['class'][1]
+
+        product_url=url+book.h3.a["href"]
+
         data.append({
             "Title": title,
             "Price": price,
-            "Availability": availability
+            "Availability": availability,
+            "Rating":rating,
+            "Product URL":product_url
         })
 
     df = pd.DataFrame(data)
